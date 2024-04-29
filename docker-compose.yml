@@ -37,3 +37,6 @@ services:
 networks:
   openems:
     driver: bridge
+volumes:
+  openems-backend-data:
+  influxdb-data:
