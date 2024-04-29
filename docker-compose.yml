@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 services:
   openems-backend:
     image: openems-backend
@@ -8,24 +8,32 @@ services:
       - 8079:8079 # Apache Felix Web Console
       - 8081:8081 # Edge.Websocket
       - 8082:8082 # Ui.Websocket
-  openems-edge:
-    image: openems-edge
-    depends_on:
-      - openems-backend
-    ports:
-      - 8080:8080 # Apache Felix Web Console
-      - 8084:8084 # Controller.Api.Rest.ReadOnly
-      - 8085:8085 # Controller.Api.Websocket
-      - 8887:8887 # OCPP 1.6J Server
-  openems-ui-edge:
-    image: openems-ui-edge
-    depends_on:
-      - openems-edge
-    ports:
-      - 4201:8000
+    networks:
+      - openems
   openems-ui-backend:
     image: openems-ui-backend
     depends_on:
       - openems-backend
     ports:
       - 4202:8000
+    networks:
+      - openems
+  influxdb:
+    image: influxdb:latest  # Using InfluxDB version 2.0
+    container_name: openems-influxdb
+    ports:
+      - "8086:8086"  # Default port for InfluxDB
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword
+      - DOCKER_INFLUXDB_INIT_ORG=my-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
+    volumes:
+      - influxdb-data:/var/lib/influxdb2  # Persist data
+    restart: unless-stopped
+    networks:
+      - openems
+networks:
+  openems:
+    driver: bridge
