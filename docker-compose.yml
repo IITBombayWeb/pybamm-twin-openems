@@ -34,6 +34,25 @@ services:
     restart: unless-stopped
     networks:
       - openems
+  openems-edge:
+    image: openems-edge
+    depends_on:
+      - openems-backend
+    ports:
+      - 8080:8080 # Apache Felix Web Console
+      - 8084:8084 # Controller.Api.Rest.ReadOnly
+      - 8085:8085 # Controller.Api.Websocket
+      - 8887:8887 # OCPP 1.6J Server
+    networks:
+      - openems
+  openems-ui-edge:
+    image: openems-ui-edge
+    depends_on:
+      - openems-edge
+    ports:
+      - 4201:8000
+    networks:
+      - openems
 networks:
   openems:
     driver: bridge
