@@ -53,6 +53,14 @@ services:
       - 4201:8000
     networks:
       - openems
+  pymodbus-fastapi-simulation:
+    build:
+      context: .
+      dockerfile: pymodbus.Dockerfile
+    ports:
+      - "5020:5020"
+    networks:
+      - openems
 networks:
   openems:
     driver: bridge

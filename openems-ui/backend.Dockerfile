@@ -1,4 +1,4 @@
-FROM node:16-alpine as build-stage
+FROM node:18-alpine as build-stage
 
 RUN apk update && apk add git
 RUN git clone --branch '2023.6.0' https://github.com/OpenEMS/openems.git

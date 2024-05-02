@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pymodbus-fastapi-simulation"
+version = "0.1.0"
+description = ""
+authors = ["Sunny <sunny.220990@gmail.com>"]
+readme = "README.md"
+
+packages = [
+  { include = "pymodbus_fastapi_simulation" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pymodbus = "^3.6.8"
+
+[tool.poetry.scripts]
+modbus-simulation = "pymodbus_fastapi_simulation:modbus_server.run_modbus_server"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
