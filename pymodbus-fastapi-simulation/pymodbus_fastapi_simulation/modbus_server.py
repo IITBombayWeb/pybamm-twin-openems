@@ -1,9 +1,10 @@
 import asyncio
 import logging
+import random
 
 from pymodbus.datastore import ModbusSequentialDataBlock, ModbusServerContext, ModbusSlaveContext
 from pymodbus.device import ModbusDeviceIdentification
-from pymodbus.server import StartTcpServer
+from pymodbus.server import StartAsyncTcpServer
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -21,20 +22,16 @@ def setup_data_blocks():
 async def update_data_blocks(block):
     while True:
         # Update data values here, example:
-        # Randomly update solar power output and consumption
-        import random
-        block.setValue(10, random.randint(10, 30))  # Solar power output between 10kW to 30kW
-        block.setValue(30, random.randint(10, 20))  # Consumption between 10kW to 20kW
+        block.setValues(10, [random.randint(10, 30)])  # Solar power output between 10kW to 30kW
+        block.setValues(30, [random.randint(10, 20)])  # Consumption between 10kW to 20kW
         await asyncio.sleep(50)  # update every 50 seconds
 
-def run_modbus_server():
+async def run_modbus_server():
     try:
         block = setup_data_blocks()
         store = ModbusSlaveContext(hr=block)
         context = ModbusServerContext(slaves={0x01: store}, single=True)
 
-        # Start the data update coroutine
-        update_task = asyncio.create_task(update_data_blocks(block))
         identity = ModbusDeviceIdentification()
         identity.VendorName = 'Pymodbus'
         identity.ProductCode = 'EMS-Sim'
@@ -43,10 +40,16 @@ def run_modbus_server():
         identity.ModelName = 'EMS Simulation'
         identity.MajorMinorRevision = '1.0'
 
+        update_task = asyncio.create_task(update_data_blocks(block))  # Create a task for the updating coroutine
         logger.info("Starting Modbus TCP server for electrical management system simulation...")
-        StartTcpServer(context=context, identity=identity, address=("localhost", 5020))
+
+        # Run the server as a coroutine
+        await StartAsyncTcpServer(context=context, identity=identity, address=("localhost", 5020))
     except Exception as e:
         logger.error("Failed to start Modbus TCP server", exc_info=True)
 
+def main():
+    asyncio.run(run_modbus_server())
+
 if __name__ == "__main__":
-    run_modbus_server()
+    main()
