@@ -12,12 +12,12 @@ RUN apt-get update \
 
 RUN pip install poetry
 
-COPY pyproject.toml poetry.lock* /code/
+COPY ./pymodbus-fastapi-simulation/pyproject.toml ./pymodbus-fastapi-simulation/poetry.lock* /code/
 RUN poetry config virtualenvs.create false \
     && poetry install --no-dev --no-interaction --no-ansi
-COPY ./pymodbus_fastapi_simulation /code/pymodbus_fastapi_simulation
+COPY ./pymodbus-fastapi-simulation/pymodbus_fastapi_simulation /code/pymodbus_fastapi_simulation
 
-COPY entrypoint.sh /code/
+COPY ./pymodbus-fastapi-simulation/entrypoint.sh /code/
 RUN chmod +x /code/entrypoint.sh
 
 ENTRYPOINT ["/code/entrypoint.sh"]

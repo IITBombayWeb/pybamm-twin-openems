@@ -56,9 +56,9 @@ services:
   pymodbus-fastapi-simulation:
     build:
       context: .
-      dockerfile: pymodbus.Dockerfile
+      dockerfile: ./pymodbus-fastapi-simulation/pymodbus.Dockerfile
     ports:
-      - "5020:5020"
+      - 5020:5020
     networks:
       - openems
 networks:
