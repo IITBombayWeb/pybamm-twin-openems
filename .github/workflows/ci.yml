@@ -1,0 +1,26 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy using SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no username@your-server-ip 'bash -s' < ./deploy.sh
+
+      - name: Cleanup
+        if: always()
+        run: echo "Deployment process completed."
