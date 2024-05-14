@@ -27,6 +27,10 @@ docker build -f backend.Dockerfile -t openems-ui-backend .
 echo "Building openems-ui-edge..."
 docker build -f edge.Dockerfile -t openems-ui-edge .
 
+# Backing up InfluxDB data
+echo "Backing up InfluxDB data..."
+docker exec openems-influxdb influx backup /var/lib/influxdb2/backup
+
 # Assuming docker-compose.yml is in the root or adjust path accordingly
 cd ..
 
