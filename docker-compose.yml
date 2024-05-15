@@ -8,6 +8,8 @@ services:
       - 8079:8079 # Apache Felix Web Console
       - 8081:8081 # Edge.Websocket
       - 8082:8082 # Ui.Websocket
+    volumes:
+      - ./openems-backend/config.d:/opt/openems-backend/config.d 
     networks:
       - openems
   openems-ui-backend:
@@ -43,6 +45,8 @@ services:
       - 8084:8084 # Controller.Api.Rest.ReadOnly
       - 8085:8085 # Controller.Api.Websocket
       - 8887:8887 # OCPP 1.6J Server
+    volumes:
+      - ./openems-edge/config.d:/opt/openems-edge/config.d 
     networks:
       - openems
   openems-ui-edge:
