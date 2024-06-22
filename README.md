@@ -1,7 +1,5 @@
 # OpenEMS
 
-https://openems.github.io/openems.io/openems/latest/gettingstarted.html
-
 Running OpenEMS ecosystem in docker (with some simulation enabled)
 
 # Docker
