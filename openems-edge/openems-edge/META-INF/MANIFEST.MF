@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Embedded-Runpath: jar/org.apache.felix.framework-7.0.5.jar,jar/biz.aQu
+ te.launcher-7.0.0.jar
+Main-Class: aQute.launcher.pre.EmbeddedLauncher
+
